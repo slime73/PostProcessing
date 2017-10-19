@@ -2,10 +2,12 @@ using System.Collections.Generic;
 
 namespace UnityEngine.Rendering.PostProcessing
 {
+#if ENABLE_VR
 #if UNITY_2017_2_OR_NEWER
     using XRSettings = UnityEngine.XR.XRSettings;
 #elif UNITY_5_6_OR_NEWER
     using XRSettings = UnityEngine.VR.VRSettings;
+#endif
 #endif
 
     // Context object passed around all post-fx in a frame
@@ -23,6 +25,7 @@ namespace UnityEngine.Rendering.PostProcessing
             {
                 m_Camera = value;
 
+#if ENABLE_VR
                 if (XRSettings.isDeviceActive)
                 {
 #if UNITY_2017_2_OR_NEWER
@@ -41,6 +44,7 @@ namespace UnityEngine.Rendering.PostProcessing
                     xrSingleEyeHeight = XRSettings.eyeTextureHeight;
                 }
                 else
+#endif
                 {
                     width = m_Camera.pixelWidth;
                     height = m_Camera.pixelHeight;

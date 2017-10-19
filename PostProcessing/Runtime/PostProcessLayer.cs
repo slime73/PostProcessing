@@ -5,10 +5,12 @@ using UnityEngine.Assertions;
 
 namespace UnityEngine.Rendering.PostProcessing
 {
+#if ENABLE_VR
 #if UNITY_2017_2_OR_NEWER
     using XRSettings = UnityEngine.XR.XRSettings;
 #elif UNITY_5_6_OR_NEWER
     using XRSettings = UnityEngine.VR.VRSettings;
+#endif
 #endif
 
     // TODO: XMLDoc everything (?)
@@ -272,8 +274,10 @@ namespace UnityEngine.Rendering.PostProcessing
             m_Camera.ResetProjectionMatrix();
             m_Camera.nonJitteredProjectionMatrix = m_Camera.projectionMatrix;
 
+#if ENABLE_VR
             if (XRSettings.isDeviceActive)
                 m_Camera.ResetStereoProjectionMatrices();
+#endif
 
             BuildCommandBuffers();
         }
@@ -427,11 +431,13 @@ namespace UnityEngine.Rendering.PostProcessing
             {
                 m_Camera.ResetProjectionMatrix();
 
+#if ENABLE_VR
                 if (XRSettings.isDeviceActive)
                 {
                     if (RuntimeUtilities.isSinglePassStereoEnabled || m_Camera.stereoActiveEye == Camera.MonoOrStereoscopicEye.Right)
                         m_Camera.ResetStereoProjectionMatrices();
                 }
+#endif
             }
         }
 
@@ -625,6 +631,7 @@ namespace UnityEngine.Rendering.PostProcessing
             {
                 if (!RuntimeUtilities.scriptableRenderPipelineActive)
                 {
+#if ENABLE_VR
                     if (XRSettings.isDeviceActive)
                     {
                         // We only need to configure all of this once for stereo, during OnPreCull
@@ -632,6 +639,7 @@ namespace UnityEngine.Rendering.PostProcessing
                             temporalAntialiasing.ConfigureStereoJitteredProjectionMatrices(context);
                     }
                     else
+#endif
                     {
                         temporalAntialiasing.ConfigureJitteredProjectionMatrix(context);
                     }

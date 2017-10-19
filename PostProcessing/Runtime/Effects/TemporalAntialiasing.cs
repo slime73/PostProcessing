@@ -140,6 +140,7 @@ namespace UnityEngine.Rendering.PostProcessing
         {
             rt.name = "Temporal Anti-aliasing History id #" + id;
 
+#if ENABLE_VR
             bool vrDeviceActive = false;
 
 #if UNITY_2017_2_OR_NEWER
@@ -150,6 +151,7 @@ namespace UnityEngine.Rendering.PostProcessing
 
             if (vrDeviceActive)
                 rt.name += " for eye " + context.xrActiveEye;
+#endif
         }
 
         RenderTexture CheckHistory(int id, PostProcessRenderContext context)
